@@ -5,7 +5,7 @@ import 'package:eshhenily/modules/vodafone/vodafone.dart';
 import 'package:eshhenily/modules/we/we.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
-
+import 'package:animations/animations.dart';
 import 'package:flutter/services.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -231,52 +231,65 @@ class _MyCustomUIState extends State<MyCustomUI>
               ),
             );
           },
-          child: Container(
-            padding: EdgeInsets.all(15),
-            height: _w / 2,
-            width: _w / 2.4,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Color(0xff040039).withOpacity(.15),
-                  blurRadius: 99,
+          child: OpenContainer(
+            closedBuilder: (_, openContainer) {
+              return Container(
+                padding: EdgeInsets.all(15),
+                height: _w / 2,
+                width: _w / 2.4,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xff040039).withOpacity(.15),
+                      blurRadius: 99,
+                    ),
+                  ],
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(25),
+                  ),
                 ),
-              ],
-              borderRadius: BorderRadius.all(
-                Radius.circular(25),
-              ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(),
+                    Container(
+                      height: _w / 5,
+                      width: _w / 5,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: Image.asset('$image'),
+                      ),
+                    ),
+                    Text(
+                      title,
+                      maxLines: 4,
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black.withOpacity(.5),
+                        fontWeight: FontWeight.w700,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(),
+                  ],
+                ),
+              );
+            },
+            openColor: Colors.white,
+            closedElevation: 50.0,
+            closedShape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(100),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                SizedBox(),
-                Container(
-                  height: _w / 5,
-                  width: _w / 5,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: Image.asset('$image'),
-                  ),
-                ),
-                Text(
-                  title,
-                  maxLines: 4,
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black.withOpacity(.5),
-                    fontWeight: FontWeight.w700,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(),
-              ],
-            ),
+            closedColor: Colors.white,
+            openBuilder: (_, closeContainer) {
+              return route;
+            },
           ),
         ),
       ),
