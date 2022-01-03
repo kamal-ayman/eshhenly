@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "330281756916",
+    "project_id": "iamgetotextconverterapp",
+    "storage_bucket": "iamgetotextconverterapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330281756916:android:c655d1229e0af3195d56a1",
+        "android_client_info": {
+          "package_name": "com.oliver.eshhenily.eshhenily"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "330281756916-4mrq2el0a5n84dtla27vb90gu3l5234d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.oliver.eshhenily.eshhenily",
+            "certificate_hash": "b6d178687df8d35d4ccce30aac91911f98a8781b"
+          }
+        },
+        {
+          "client_id": "330281756916-76vq9q1d8oaqgas6lgovrtng7bqge2rp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIt1n4AAx0jjQRREqKm_DPfyFFyxCONcQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "330281756916-76vq9q1d8oaqgas6lgovrtng7bqge2rp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
