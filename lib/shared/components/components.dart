@@ -150,7 +150,14 @@ Widget defaultPage({
                   restartDialogToDefault: false),
           ],
         ),
-
+        // Center(
+        //   child: Conditional.single(
+        //     context: context,
+        //     conditionBuilder: (context) => state is LoadingState,
+        //     widgetBuilder: (context) => Center(child: CircularProgressIndicator()),
+        //     fallbackBuilder: (context) => Container(),
+        //   ),
+        // ),
       ],
     ),
   );

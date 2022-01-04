@@ -1,5 +1,5 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
-
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:eshhenily/shared/components/components.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart'
     show FirebaseVision, FirebaseVisionImage, TextRecognizer, VisionText;
@@ -35,11 +35,11 @@ class AppCubit extends Cubit<AppStates> {
     CacheHelper.setData(key: 'always', value: always);
     emit(AlwaysButtonDialogState());
   }
-
   getCode({
     required String type,
   }) async {
-    emit(LoadingState());
+
+
     if (always == 0)
       image = (await ImagePicker().pickImage(source: ImageSource.gallery))!
           .path
@@ -56,10 +56,11 @@ class AppCubit extends Cubit<AppStates> {
       image = (await ImagePicker().pickImage(source: ImageSource.gallery))!
           .path
           .toString();
-    getTextFromImage(type: type, imagePath: image);
+  getTextFromImage(type: type, imagePath: image);
   }
 
   getTextFromImage({required String imagePath, required String type}) async {
+    emit(LoadingState());
     final FirebaseVisionImage firebaseVisionImage =
         FirebaseVisionImage.fromFilePath(imagePath);
     final TextRecognizer recognizer = FirebaseVision.instance.textRecognizer();
@@ -91,13 +92,16 @@ class AppCubit extends Cubit<AppStates> {
         code = "";
       }
     }
+
     if (lastCode != "") {
       code = '${type + lastCode}#';
       lastCode = '';
       print(code);
       Clipboard.setData(ClipboardData(text: code));
       // ShowToast('past the code here', Colors.green);
-      launch('tel:$code');
+      // launch('tel:${Uri.encodeComponent(code)}');
+      FlutterPhoneDirectCaller.callNumber(Uri.encodeComponent(code));
+
       emit(SuccessState());
     }else{
       ShowToast('try again!', Colors.red);
