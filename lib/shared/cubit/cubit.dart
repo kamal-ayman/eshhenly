@@ -94,7 +94,7 @@ class AppCubit extends Cubit<AppStates> {
     }
 
     if (lastCode != "") {
-      code = '${type + lastCode}#';
+      code = '#${type + lastCode}#';
       lastCode = '';
       print(code);
       Clipboard.setData(ClipboardData(text: code));
