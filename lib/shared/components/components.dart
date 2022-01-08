@@ -1,8 +1,8 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 import 'package:eshhenily/shared/cubit/cubit.dart';
 import 'package:eshhenily/shared/cubit/states.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_conditional_rendering/conditional.dart';
+import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 void navigatorTo(context, widget) => Navigator.push(
@@ -12,11 +12,8 @@ void navigatorTo(context, widget) => Navigator.push(
       ),
     );
 
-Future<void> showMyDialog({
-  required context,
-  required type,
-}) async {
-  AppCubit cubit = AppCubit.get(context);
+Future<void> showMyDialog(
+    {required context, required type, required cubit}) async {
   return showDialog<void>(
     context: context,
     builder: (BuildContext context) {
@@ -118,8 +115,7 @@ Widget defaultPage({
   required context,
   required AppCubit cubit,
   required String img,
-  required List<String> title,
-  required List<String> type,
+  required List<List<String>> items,
   required state,
 }) {
   return SingleChildScrollView(
@@ -141,23 +137,23 @@ Widget defaultPage({
               ],
             ),
             SizedBox(height: 20),
-            for (int i = 0; i < title.length; i++)
+            for (int i = 0; i < items.length; i++)
               defaultButton(
-                  type: type[i],
-                  title: title[i],
+                  title: items[i][0],
+                  type: items[i][1],
                   context: context,
                   cubit: cubit,
                   restartDialogToDefault: false),
           ],
         ),
-        // Center(
-        //   child: Conditional.single(
-        //     context: context,
-        //     conditionBuilder: (context) => state is LoadingState,
-        //     widgetBuilder: (context) => Center(child: CircularProgressIndicator()),
-        //     fallbackBuilder: (context) => Container(),
-        //   ),
-        // ),
+        Center(
+          child: Conditional.single(
+            context: context,
+            conditionBuilder: (context) => state is LoadingState,
+            widgetBuilder: (context) => Center(child: CircularProgressIndicator()),
+            fallbackBuilder: (context) => Row(),
+          ),
+        ),
       ],
     ),
   );
@@ -185,7 +181,7 @@ Widget defaultButton({
         } else if (cubit.always != -1) {
           cubit.getCode(type: type);
         } else {
-          showMyDialog(context: context, type: type);
+          showMyDialog(context: context, type: type, cubit: cubit);
         }
       },
       child: Column(
@@ -233,7 +229,7 @@ ShowToast(msg, color) => Fluttertoast.showToast(
     msg: msg,
     toastLength: Toast.LENGTH_LONG,
     gravity: ToastGravity.CENTER,
-    timeInSecForIosWeb: 6,
+    timeInSecForIosWeb: 5,
     backgroundColor: color,
     textColor: Colors.white,
     fontSize: 16.0);

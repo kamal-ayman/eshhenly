@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, unnecessary_string_interpolations
+
 import 'package:eshhenily/modules/etsalat/etsalat.dart';
 import 'package:eshhenily/modules/orange/orange.dart';
 import 'package:eshhenily/modules/setting/setting.dart';

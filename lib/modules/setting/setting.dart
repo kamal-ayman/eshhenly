@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
+
 import 'package:eshhenily/shared/components/components.dart';
 import 'package:eshhenily/shared/cubit/cubit.dart';
 import 'package:eshhenily/shared/cubit/states.dart';

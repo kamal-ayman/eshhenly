@@ -2,8 +2,6 @@ abstract class AppStates {}
 
 class AppInitialState extends AppStates {}
 
-// class GetCodeState extends AppStates {}
-
 class LoadingState extends AppStates {}
 
 class SuccessState extends AppStates {}

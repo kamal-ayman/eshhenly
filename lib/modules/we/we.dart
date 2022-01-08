@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:eshhenily/shared/components/components.dart';
 import 'package:eshhenily/shared/cubit/cubit.dart';
 import 'package:eshhenily/shared/cubit/states.dart';
@@ -30,18 +32,23 @@ class WeScreen extends StatelessWidget {
           ),
           body: defaultPage(
             context: context,
-            title: [
-              'رصيد - كارت فكة\n# كود الشحن * 555 *',
-              'إنترنت فقط\n# كود الشحن * 599 *',
-              'وحدات فقط\n# كود الشحن * 566 *',
+            items: [
+              [
+                'رصيد - كارت فكة\n# كود الشحن * 555 *',
+                '*555*',
+              ],
+              [
+                'إنترنت فقط\n# كود الشحن * 599 *',
+                '*599*',
+              ],
+              [
+                'وحدات فقط\n# كود الشحن * 566 *',
+                '*566*',
+              ],
             ],
             cubit: cubit,
-            type: [
-              '*555*',
-              '*599*',
-              '*566*',
-            ],
-            img: 'assets/img/we.png', state: state,
+            img: 'assets/img/we.png',
+            state: state,
           ),
         );
       },

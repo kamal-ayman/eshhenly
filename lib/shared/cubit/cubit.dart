@@ -1,10 +1,9 @@
-// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: curly_braces_in_flow_control_structures, import_of_legacy_library_into_null_safe
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:eshhenily/shared/components/components.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart'
     show FirebaseVision, FirebaseVisionImage, TextRecognizer, VisionText;
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
 import 'package:eshhenily/shared/cubit/states.dart';
 import 'package:eshhenily/shared/network/local/cache_helper.dart';
@@ -16,7 +15,6 @@ class AppCubit extends Cubit<AppStates> {
 
   static AppCubit get(context) => BlocProvider.of(context);
 
-  String extractText = "";
   String image = "";
   String code = "";
   String lastCode = "";
@@ -35,11 +33,10 @@ class AppCubit extends Cubit<AppStates> {
     CacheHelper.setData(key: 'always', value: always);
     emit(AlwaysButtonDialogState());
   }
+
   getCode({
     required String type,
   }) async {
-
-
     if (always == 0)
       image = (await ImagePicker().pickImage(source: ImageSource.gallery))!
           .path
@@ -56,7 +53,7 @@ class AppCubit extends Cubit<AppStates> {
       image = (await ImagePicker().pickImage(source: ImageSource.gallery))!
           .path
           .toString();
-  getTextFromImage(type: type, imagePath: image);
+    getTextFromImage(type: type, imagePath: image);
   }
 
   getTextFromImage({required String imagePath, required String type}) async {
@@ -68,13 +65,6 @@ class AppCubit extends Cubit<AppStates> {
     getText(visionText.text, type);
     visionText = null;
   }
-
-  // getTextFromImage({required InputImage image, required type}) async {
-  //   final textDetector = GoogleMlKit.vision.textDetector();
-  //   final RecognisedText recognisedText = await textDetector.processImage(image);
-  //   print(recognisedText.text);
-  //   getText(recognisedText.text, type);
-  // }
 
   getText(str, type) async {
     for (int i = 0; i < str.length; i++) {
@@ -96,14 +86,11 @@ class AppCubit extends Cubit<AppStates> {
     if (lastCode != "") {
       code = '#${type + lastCode}#';
       lastCode = '';
-      print(code);
       Clipboard.setData(ClipboardData(text: code));
-      // ShowToast('past the code here', Colors.green);
-      // launch('tel:${Uri.encodeComponent(code)}');
       FlutterPhoneDirectCaller.callNumber(Uri.encodeComponent(code));
 
       emit(SuccessState());
-    }else{
+    } else {
       ShowToast('try again!', Colors.red);
       emit(ErrorState());
     }
@@ -120,17 +107,4 @@ class AppCubit extends Cubit<AppStates> {
       emit(SelectButtonDialogState());
     }
   }
-
-// bool isDark = false;
-// void switchMood({bool? cached}) {
-//   if (cached != null) {
-//     isDark = cached;
-//     emit(SwitchMoodState());
-//     return;
-//   }
-//   isDark = !isDark;
-//   CacheHelper.putData(isDark: isDark).then((value) {
-//     emit(SwitchMoodState());
-//   });
-// }
 }

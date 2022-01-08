@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors
 
 import 'package:eshhenily/shared/components/components.dart';
 import 'package:eshhenily/shared/cubit/cubit.dart';
@@ -32,18 +32,23 @@ class OrangeScreen extends StatelessWidget {
           ),
           body: defaultPage(
             context: context,
-            title: [
-              'رصيد - كارت فكة\n# كود الشحن * 102 #',
-              'وحدات لكل الشبكات\n# كود الشحن * 102 #',
-              'ميجابايتس\n# كود الشحن * 2 * 102 #',
+            items: [
+              [
+                'رصيد - كارت فكة\n# كود الشحن * 102 #',
+                '#102*',
+              ],
+              [
+                'وحدات لكل الشبكات\n# كود الشحن 1 * 102 #',
+                '#102*1*',
+              ],
+              [
+                'ميجابايتس\n# كود الشحن * 2 * 102 #',
+                '#102*2*',
+              ]
             ],
             cubit: cubit,
-            type: [
-              '#102*',
-              '#102*1*',
-              '#102*2*',
-            ],
-            img: 'assets/img/orange.png', state: state,
+            img: 'assets/img/orange.png',
+            state: state,
           ),
         );
       },

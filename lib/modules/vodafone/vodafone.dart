@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:eshhenily/shared/components/components.dart';
 import 'package:eshhenily/shared/cubit/cubit.dart';
 import 'package:eshhenily/shared/cubit/states.dart';
@@ -30,18 +32,23 @@ class VodafoneScreen extends StatelessWidget {
           ),
           body: defaultPage(
             context: context,
-            title: [
-              'رصيد - كارت فكة\n# كود الشحن * 858 *',
-              'دقائق لشبكة فودافون \n# كود الشحن * 1 * 858 *',
-              'فليكسات\n# كود الشحن * 2 * 858 *',
+            items: [
+              [
+                'رصيد - كارت فكة\n# كود الشحن * 858 *',
+                '*858*',
+              ],
+              [
+                'دقائق لشبكة فودافون \n# كود الشحن * 1 * 858 *',
+                '*858*1*',
+              ],
+              [
+                'فليكسات\n# كود الشحن * 2 * 858 *',
+                '*858*2*',
+              ],
             ],
             cubit: cubit,
-            type: [
-              '*858*',
-              '*858*1*',
-              '*858*2*',
-            ],
-            img: 'assets/img/vodafone.png', state: state,
+            img: 'assets/img/vodafone.png',
+            state: state,
           ),
         );
       },
