@@ -35,7 +35,6 @@ class SettingScreen extends StatelessWidget {
           body: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(
-
               children: [
                 defaultButton(
                     restartDialogToDefault: true,

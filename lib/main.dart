@@ -40,7 +40,7 @@ class HomeCart extends StatelessWidget {
             appBarTheme: AppBarTheme(
               brightness: Brightness.light,
               backgroundColor: Colors.white,
-              elevation: 50,
+              elevation: 10,
               centerTitle: true,
               shadowColor: Colors.black.withOpacity(.5),
             ),

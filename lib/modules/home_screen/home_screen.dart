@@ -284,7 +284,7 @@ class _MyCustomUIState extends State<MyCustomUI>
               );
             },
             openColor: Colors.white,
-            closedElevation: 50.0,
+            closedElevation: 10.0,
             closedShape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(100),
             ),

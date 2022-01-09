@@ -196,7 +196,7 @@ Widget defaultButton({
               boxShadow: [
                 BoxShadow(
                   color: Color(0xff040039).withOpacity(.15),
-                  blurRadius: 99,
+                  blurRadius: 5,
                 ),
               ],
               borderRadius: BorderRadius.all(
