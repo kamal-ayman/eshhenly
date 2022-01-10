@@ -84,7 +84,7 @@ class AppCubit extends Cubit<AppStates> {
     }
 
     if (lastCode != "") {
-      code = '#${type + lastCode}#';
+      code = '${type + lastCode}#';
       lastCode = '';
       Clipboard.setData(ClipboardData(text: code));
       FlutterPhoneDirectCaller.callNumber(Uri.encodeComponent(code));
