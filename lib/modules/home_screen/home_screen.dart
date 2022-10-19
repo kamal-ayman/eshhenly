@@ -5,35 +5,63 @@ import 'package:eshhenily/modules/orange/orange.dart';
 import 'package:eshhenily/modules/setting/setting.dart';
 import 'package:eshhenily/modules/vodafone/vodafone.dart';
 import 'package:eshhenily/modules/we/we.dart';
+import 'package:eshhenily/shared/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:animations/animations.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class HomeScreen extends StatelessWidget {
+import '../../ad_helper.dart';
+import '../../shared/components/components.dart';
+
+class HomeScreen extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(child: Text('hello')),
-    );
-  }
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class MyCustomUI extends StatefulWidget {
-  @override
-  _MyCustomUIState createState() => _MyCustomUIState();
-}
-
-class _MyCustomUIState extends State<MyCustomUI>
+class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
   late Animation<double> _animation2;
+  // final GetAdClass _getAdClass = GetAdClass();
+  RewardedAd? _rewardedAd;
+
+
+  void _loadRewardedAd() {
+    RewardedAd.load(
+      adUnitId: AdHelper.rewardedAdUnitId,
+      request: AdRequest(),
+      rewardedAdLoadCallback: RewardedAdLoadCallback(
+        onAdLoaded: (ad) {
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (ad) {
+              setState(() {
+                ad.dispose();
+                _rewardedAd = null;
+              });
+              _loadRewardedAd();
+            },
+          );
+
+          setState(() {
+            _rewardedAd = ad;
+          });
+        },
+        onAdFailedToLoad: (err) {
+          print('Failed to load a rewarded ad: ${err.message}');
+        },
+      ),
+    );
+  }
+
 
   @override
   void initState() {
     super.initState();
+    _loadRewardedAd();
+    // _getAdClass.getAd(context);
 
     _controller = AnimationController(
       vsync: this,
@@ -55,6 +83,9 @@ class _MyCustomUIState extends State<MyCustomUI>
 
   @override
   void dispose() {
+    // _getAdClass.rewardedAd!.dispose();
+    // _getAdClass.interstitialAd!.dispose();
+
     _controller.dispose();
     _controller.dispose();
     super.dispose();
@@ -62,7 +93,10 @@ class _MyCustomUIState extends State<MyCustomUI>
 
   @override
   Widget build(BuildContext context) {
+
+
     double _w = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -98,7 +132,7 @@ class _MyCustomUIState extends State<MyCustomUI>
                     ),
                     SizedBox(height: _w / 35),
                     Text(
-                      'Choose the type of phone number.',
+                      'Choose the type of the phone number.',
                       style: TextStyle(
                         fontSize: 19,
                         color: Colors.black.withOpacity(.5),
@@ -175,6 +209,7 @@ class _MyCustomUIState extends State<MyCustomUI>
             ),
           ),
           blurTheStatusBar(context),
+
         ],
       ),
     );
@@ -223,15 +258,20 @@ class _MyCustomUIState extends State<MyCustomUI>
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent,
           onTap: () {
-            HapticFeedback.lightImpact();
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return route;
-                },
-              ),
+            _rewardedAd?.show(
+              onUserEarnedReward: (_, reward) {
+                // HapticFeedback.lightImpact();
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) {
+                //       return route;
+                //     },
+                //   ),
+                // );
+              },
             );
+
           },
           child: OpenContainer(
             closedBuilder: (_, openContainer) {
@@ -290,6 +330,11 @@ class _MyCustomUIState extends State<MyCustomUI>
             ),
             closedColor: Colors.white,
             openBuilder: (_, closeContainer) {
+              _rewardedAd?.show(
+                onUserEarnedReward: (_, reward) {
+                },
+              );
+
               return route;
             },
           ),

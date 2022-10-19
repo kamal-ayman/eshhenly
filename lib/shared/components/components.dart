@@ -1,9 +1,11 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 import 'package:eshhenily/shared/cubit/cubit.dart';
 import 'package:eshhenily/shared/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
+import '../../ad_helper.dart';
 
 void navigatorTo(context, widget) => Navigator.push(
       context,
@@ -47,7 +49,7 @@ Future<void> showMyDialog(
           TextButton(
             child: Text('once'),
             onPressed: () {
-              cubit.getCode(type: type);
+              cubit.getImage(type: type);
               Navigator.of(context).pop();
             },
           ),
@@ -55,7 +57,7 @@ Future<void> showMyDialog(
             child: Text('always'),
             onPressed: () {
               cubit.setAlways(cubit.last);
-              cubit.getCode(type: type);
+              cubit.getImage(type: type);
               Navigator.of(context).pop();
             },
           ),
@@ -113,10 +115,8 @@ Widget defaultSelectButton({
 
 Widget defaultPage({
   required context,
-  required AppCubit cubit,
   required String img,
   required List<List<String>> items,
-  required state,
 }) {
   return SingleChildScrollView(
     physics: BouncingScrollPhysics(),
@@ -139,33 +139,35 @@ Widget defaultPage({
             SizedBox(height: 20),
             for (int i = 0; i < items.length; i++)
               defaultButton(
-                  title: items[i][0],
-                  type: items[i][1],
-                  context: context,
-                  cubit: cubit,
-                  restartDialogToDefault: false),
+                title: items[i][0],
+                type: items[i][1],
+                context: context,
+              ),
           ],
         ),
         Center(
           child: Conditional.single(
             context: context,
-            conditionBuilder: (context) => state is LoadingState,
-            widgetBuilder: (context) => Center(child: CircularProgressIndicator()),
+            conditionBuilder: (context) =>
+                AppCubit.get(context).state is LoadingState,
+            widgetBuilder: (context) =>
+                Center(child: CircularProgressIndicator()),
             fallbackBuilder: (context) => Row(),
           ),
         ),
+
       ],
     ),
   );
 }
 
 Widget defaultButton({
-  required AppCubit cubit,
   required context,
   required String title,
   required String type,
-  required bool restartDialogToDefault,
+  bool restartDialogToDefault = false,
 }) {
+  var cubit = AppCubit.get(context);
   double _w = MediaQuery.of(context).size.width;
 
   return Padding(
@@ -176,10 +178,10 @@ Widget defaultButton({
       ),
       onTap: () {
         if (restartDialogToDefault) {
-          ShowToast('done restart to default', Colors.green);
+          ShowToast('reset successfully', Colors.green);
           cubit.restartDialog();
         } else if (cubit.always != -1) {
-          cubit.getCode(type: type);
+          cubit.getImage(type: type);
         } else {
           showMyDialog(context: context, type: type, cubit: cubit);
         }
@@ -226,10 +228,69 @@ Widget defaultButton({
 }
 
 ShowToast(msg, color) => Fluttertoast.showToast(
-    msg: msg,
-    toastLength: Toast.LENGTH_LONG,
-    gravity: ToastGravity.CENTER,
-    timeInSecForIosWeb: 5,
-    backgroundColor: color,
-    textColor: Colors.white,
-    fontSize: 16.0);
+      msg: msg,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 5,
+      backgroundColor: color,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+
+AppBar CustomAppBar({
+  required BuildContext context,
+  required String title,
+}) {
+  return AppBar(
+    title: Text(
+      '$title Page',
+      style: TextStyle(
+          color: Colors.black.withOpacity(.7),
+          fontWeight: FontWeight.w600,
+          letterSpacing: 1),
+    ),
+    leading: IconButton(
+      splashColor: Colors.transparent,
+      splashRadius: 20,
+      icon: Icon(
+        Icons.arrow_back,
+        color: Colors.black.withOpacity(.8),
+      ),
+      onPressed: () => Navigator.pop(context),
+    ),
+  );
+}
+
+// class GetAdClass {
+//   InterstitialAd? interstitialAd;
+//   RewardedAd? rewardedAd;
+//
+//   void getAd(context) {
+//     var cubit = AppCubit.get(context);
+//     RewardedAd.load(
+//       adUnitId: AdHelper.rewardedAdUnitId,
+//       request: AdRequest(),
+//       rewardedAdLoadCallback: RewardedAdLoadCallback(
+//         onAdLoaded: (ad) {
+//           ad.fullScreenContentCallback = FullScreenContentCallback(
+//             onAdDismissedFullScreenContent: (ad) {
+//                 ad.dispose();
+//                 cubit.rewardedAd = null;
+//                 cubit.loadRewardedAd();
+//             },
+//           );
+//
+//
+//             cubit.rewardedAd = ad;
+//
+//         },
+//         onAdFailedToLoad: (err) {
+//           print('Failed to load a rewarded ad: ${err.message}');
+//         },
+//       ),
+//     );
+//
+//
+//
+//   }
+// }

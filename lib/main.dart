@@ -1,15 +1,14 @@
-// ignore_for_file: prefer_const_constructors_in_immutables, use_key_in_widget_constructors, unnecessary_null_comparison, deprecated_member_use
-
 import 'package:eshhenily/shared/bloc_observer.dart';
 import 'package:eshhenily/shared/cubit/cubit.dart';
-import 'package:eshhenily/shared/cubit/states.dart';
 import 'package:eshhenily/shared/network/local/cache_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'modules/home_screen/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   Bloc.observer = MyBlocObserver();
   await CacheHelper.init();
   int always = -1;
@@ -31,20 +30,18 @@ class HomeCart extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AppCubit()..setAlways(always),
-      child: BlocConsumer<AppCubit, AppStates>(
-        listener: (context, state) {},
-        builder: (context, state) => MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: MyCustomUI(),
-          theme: ThemeData(
-            appBarTheme: AppBarTheme(
-              brightness: Brightness.light,
-              backgroundColor: Colors.white,
-              elevation: 10,
-              centerTitle: true,
-              shadowColor: Colors.black.withOpacity(.5),
-            ),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: HomeScreen(),
+        theme: ThemeData(
+          appBarTheme: AppBarTheme(
+            brightness: Brightness.light,
+            backgroundColor: Colors.white,
+            elevation: 10,
+            centerTitle: true,
+            shadowColor: Colors.black.withOpacity(.5),
           ),
+          buttonColor: Colors.transparent,
         ),
       ),
     );

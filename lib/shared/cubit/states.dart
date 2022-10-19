@@ -13,3 +13,5 @@ class AlwaysButtonDialogState extends AppStates {}
 class SelectButtonDialogState extends AppStates {}
 
 class SwitchMoodState extends AppStates {}
+
+class GetAdState extends AppStates {}

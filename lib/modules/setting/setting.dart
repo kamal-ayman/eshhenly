@@ -10,53 +10,49 @@ import 'package:url_launcher/url_launcher.dart';
 class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppCubit, AppStates>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        var cubit = AppCubit.get(context);
-        return Scaffold(
-          appBar: AppBar(
-            elevation: 0,
-            title: Text(
-              'Settings',
-              style: TextStyle(
-                  color: Colors.black.withOpacity(.7),
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1),
-            ),
-            leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.black.withOpacity(.8),
-              ),
-              onPressed: () => Navigator.pop(context),
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        title: Text(
+          'Settings',
+          style: TextStyle(
+              color: Colors.black.withOpacity(.7),
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1),
+        ),
+        leading: IconButton(
+          splashColor: Colors.transparent,
+          splashRadius: 20,
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black.withOpacity(.8),
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              children: [
-                defaultButton(
-                    restartDialogToDefault: true,
-                    type: '',
-                    title: 'restart to default',
-                    context: context,
-                    cubit: cubit),
-                Spacer(),
-                TextButton(onPressed: (){
-                  launch('https://www.linkedin.com/in/kamal-ayman-873170204/');
-                }, child: const Text('Click here to visit my account.😍', style: TextStyle(fontSize: 18),)),
-                Text(
-                  'Made by kamal ayman\nphone number : 01201250706',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey[700], fontSize: 16),
-                ),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          children: [
+            defaultButton(
+              restartDialogToDefault: true,
+              type: '',
+              title: 'reset to default',
+              context: context,
+            ),
+            Spacer(),
+            TextButton(onPressed: (){
+              launch('https://www.linkedin.com/in/kamal-ayman/');
+            }, child: const Text('Click here to visit my account.', style: TextStyle(fontSize: 18),)),
+            Text(
+              'Made by kamal ayman\nphone number : 01201250706',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey[700], fontSize: 16),
+            ),
 
-              ],
-            ),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 }

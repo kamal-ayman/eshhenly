@@ -1,4 +1,3 @@
-// ignore_for_file: curly_braces_in_flow_control_structures, import_of_legacy_library_into_null_safe
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:eshhenily/shared/components/components.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart'
@@ -8,7 +7,10 @@ import 'package:flutter/services.dart';
 import 'package:eshhenily/shared/cubit/states.dart';
 import 'package:eshhenily/shared/network/local/cache_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../../ad_helper.dart';
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());
@@ -34,25 +36,19 @@ class AppCubit extends Cubit<AppStates> {
     emit(AlwaysButtonDialogState());
   }
 
-  getCode({
+  getImage({
     required String type,
   }) async {
     if (always == 0)
-      image = (await ImagePicker().pickImage(source: ImageSource.gallery))!
-          .path
-          .toString();
+      image = (await ImagePicker().pickImage(source: ImageSource.camera))!.path;
     else if (always == 1)
-      image = (await ImagePicker().pickImage(source: ImageSource.gallery))!
-          .path
-          .toString();
+      image =
+          (await ImagePicker().pickImage(source: ImageSource.gallery))!.path;
     else if (last == 0)
-      image = (await ImagePicker().pickImage(source: ImageSource.camera))!
-          .path
-          .toString();
+      image = (await ImagePicker().pickImage(source: ImageSource.camera))!.path;
     else if (last == 1)
-      image = (await ImagePicker().pickImage(source: ImageSource.gallery))!
-          .path
-          .toString();
+      image =
+          (await ImagePicker().pickImage(source: ImageSource.gallery))!.path;
     getTextFromImage(type: type, imagePath: image);
   }
 
@@ -67,6 +63,7 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   getText(str, type) async {
+    code = '';
     for (int i = 0; i < str.length; i++) {
       if (str[i] == '\n') {
         code = '';
@@ -85,11 +82,17 @@ class AppCubit extends Cubit<AppStates> {
 
     if (lastCode != "") {
       code = '${type + lastCode}#';
+      print(code);
       lastCode = '';
       Clipboard.setData(ClipboardData(text: code));
-      FlutterPhoneDirectCaller.callNumber(Uri.encodeComponent(code));
-
-      emit(SuccessState());
+      FlutterPhoneDirectCaller.callNumber(Uri.encodeComponent(code))
+          .then((value) {
+        code = '';
+        emit(SuccessState());
+      }).catchError((e) {
+        ShowToast('try again!', Colors.red);
+        emit(ErrorState());
+      });
     } else {
       ShowToast('try again!', Colors.red);
       emit(ErrorState());
@@ -107,4 +110,37 @@ class AppCubit extends Cubit<AppStates> {
       emit(SelectButtonDialogState());
     }
   }
+  // InterstitialAd? interstitialAd;
+  // RewardedAd? rewardedAd;
+  // void getAd() {
+  //   emit(GetAdState());
+  // }
+  //
+  // void loadRewardedAd() {
+  //   RewardedAd.load(
+  //     adUnitId: AdHelper.rewardedAdUnitId,
+  //     request: AdRequest(),
+  //     rewardedAdLoadCallback: RewardedAdLoadCallback(
+  //       onAdLoaded: (ad) {
+  //         ad.fullScreenContentCallback = FullScreenContentCallback(
+  //           onAdDismissedFullScreenContent: (ad) {
+  //
+  //               ad.dispose();
+  //               rewardedAd = null;
+  //             emit(state);
+  //             loadRewardedAd();
+  //           },
+  //         );
+  //
+  //
+  //           rewardedAd = ad;
+  //           emit(state);
+  //
+  //       },
+  //       onAdFailedToLoad: (err) {
+  //         print('Failed to load a rewarded ad: ${err.message}');
+  //       },
+  //     ),
+  //   );
+  // }
 }

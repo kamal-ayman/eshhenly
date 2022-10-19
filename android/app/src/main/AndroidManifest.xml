@@ -9,6 +9,11 @@
         android:label="eshhenily"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-7136012509023664~5362776469"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
