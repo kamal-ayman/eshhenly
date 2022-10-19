@@ -25,7 +25,33 @@ class _HomeScreenState extends State<HomeScreen>
   late AnimationController _controller;
   late Animation<double> _animation;
   late Animation<double> _animation2;
-  // final GetAdClass _getAdClass = GetAdClass();
+
+
+  InterstitialAd? _interstitialAd;
+
+  // TODO: Implement _loadInterstitialAd()
+  void _loadInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: AdHelper.interstitialAdUnitId,
+      request: AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          ad.fullScreenContentCallback = FullScreenContentCallback();
+
+          setState(() {
+            _interstitialAd = ad;
+          });
+        },
+        onAdFailedToLoad: (err) {
+          print('Failed to load an interstitial ad: ${err.message}');
+        },
+      ),
+    );
+  }
+
+
+
+
   RewardedAd? _rewardedAd;
 
 
@@ -85,14 +111,17 @@ class _HomeScreenState extends State<HomeScreen>
   void dispose() {
     // _getAdClass.rewardedAd!.dispose();
     // _getAdClass.interstitialAd!.dispose();
+    _interstitialAd?.dispose();
 
     _controller.dispose();
     _controller.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
+    if (_interstitialAd == null) {
+      _loadInterstitialAd();
+    }
 
 
     double _w = MediaQuery.of(context).size.width;
@@ -258,19 +287,19 @@ class _HomeScreenState extends State<HomeScreen>
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent,
           onTap: () {
-            _rewardedAd?.show(
-              onUserEarnedReward: (_, reward) {
-                // HapticFeedback.lightImpact();
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) {
-                //       return route;
-                //     },
-                //   ),
-                // );
-              },
-            );
+            // _rewardedAd?.show(
+            //   onUserEarnedReward: (_, reward) {
+            //     // HapticFeedback.lightImpact();
+            //     // Navigator.push(
+            //     //   context,
+            //     //   MaterialPageRoute(
+            //     //     builder: (context) {
+            //     //       return route;
+            //     //     },
+            //     //   ),
+            //     // );
+            //   },
+            // );
 
           },
           child: OpenContainer(
@@ -330,10 +359,13 @@ class _HomeScreenState extends State<HomeScreen>
             ),
             closedColor: Colors.white,
             openBuilder: (_, closeContainer) {
+              _interstitialAd?.show();
               _rewardedAd?.show(
                 onUserEarnedReward: (_, reward) {
                 },
-              );
+              ).then((value) {
+
+              });
 
               return route;
             },
